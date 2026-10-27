@@ -1,6 +1,7 @@
 package com.temple.controller;
 
 import com.temple.model.dto.request.CreateBelieverDto;
+import com.temple.model.dto.request.UpdateBelieverDto;
 import com.temple.model.dto.response.BelieverDto;
 import com.temple.service.BelieverService;
 import jakarta.validation.Valid;
@@ -27,5 +28,15 @@ public class BelieverController {
     @GetMapping("/believer")
     public ResponseEntity<List<BelieverDto>> find() {
         return ResponseEntity.status(HttpStatus.OK).body(believerService.findAllBeliever());
+    }
+
+    @PutMapping("/believer")
+    public ResponseEntity<Integer> update(@RequestBody @Valid UpdateBelieverDto updateBelieverDto) {
+        return ResponseEntity.status(HttpStatus.OK).body(believerService.updateBeliever(updateBelieverDto));
+    }
+
+    @DeleteMapping("/believer/{id}")
+    public ResponseEntity<Integer> delete(@PathVariable Integer id) {
+        return ResponseEntity.status(HttpStatus.OK).body(believerService.deleteBeliever(id));
     }
 }

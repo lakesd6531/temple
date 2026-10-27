@@ -1,6 +1,7 @@
 package com.temple.service;
 
 import com.temple.model.dto.request.CreateBelieverDto;
+import com.temple.model.dto.request.UpdateBelieverDto;
 import com.temple.model.dto.response.BelieverDto;
 import com.temple.model.entity.Believer;
 import com.temple.model.mapper.BelieverMapper;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -32,5 +32,31 @@ public class BelieverService {
         return believerList.stream()
                 .map(believerMapper::toDto)
                 .toList();
+    }
+
+    @Transactional
+    public Integer updateBeliever(UpdateBelieverDto updateBelieverDto) {
+        Integer id = updateBelieverDto.getId();
+
+        Believer believer = believerRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("找不到信徒 ID: " + id));
+
+        believerMapper.updateEntityFromDto(updateBelieverDto, believer);
+
+        return believerRepository.save(believer).getOid();
+    }
+
+    @Transactional
+    public Integer deleteBeliever(Integer id) {
+        if (id == null) {
+            throw new IllegalArgumentException("信徒 ID 不能為空");
+        }
+
+        Believer believer = believerRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("找不到信徒 ID: " + id));
+
+        believerRepository.delete(believer);
+
+        return id;
     }
 }
