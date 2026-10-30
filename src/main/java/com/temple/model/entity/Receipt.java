@@ -23,7 +23,7 @@ public class Receipt {
     /**
      * 信徒識別碼
      */
-    @Column(name = "believer_oid", nullable = false)
+    @Column(name = "believer_oid")
     private Integer believerOid;
 
     /**
